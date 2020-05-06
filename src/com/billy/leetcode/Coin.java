@@ -40,6 +40,12 @@ public class Coin {
     }
     private Map<Integer, Integer> memo = new HashMap<>();
 
+    /**
+     *  自上而下
+     * @param coins
+     * @param n
+     * @return
+     */
     private int dp(int[] coins, int n) {
 
         if (memo.containsKey(n)) {
@@ -61,6 +67,32 @@ public class Coin {
         }
         memo.put(n, res != Integer.MAX_VALUE ? res: -1);
         return memo.get(n);
+    }
+
+
+    /**
+     * 自下而上
+     * @param coins
+     * @param amount
+     * @return
+     * 1, 2, 5
+     *  11
+     */
+    private int coinChangeDown(int[] coins, int amount) {
+
+        int[] dp = new int[amount + 1];
+        dp[0] = 0;
+        for (int i = 0; i < dp.length; i++) {
+
+            for (int coin : coins) {
+                if (i < coin) {
+                    continue;
+                }
+                dp[i] = Math.min(dp[i], 1 + dp[i - coin]);
+            }
+        }
+        return (dp[amount] == amount + 1) ? -1 : dp[amount];
+
     }
 
 }
