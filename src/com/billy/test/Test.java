@@ -1,11 +1,9 @@
 package com.billy.test;
 
-import io.swagger.models.auth.In;
-
-import java.util.*;
-
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 测试类
