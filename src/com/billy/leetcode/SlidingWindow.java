@@ -12,8 +12,12 @@ public class SlidingWindow {
 
     public static void main(String[] args) {
 
-        String s = minWindowSubStr("ADOBECODEBANC", "ABC");
+        SlidingWindow slidingWindow = new SlidingWindow();
+        String s = slidingWindow.minWindowSubStr("ADOBECODEBANC", "ABC");
         System.out.println(s);
+
+        boolean b = checkInclusion("asdfebah", "ab");
+        System.out.println(b);
 
     }
 
@@ -34,7 +38,7 @@ public class SlidingWindow {
      *              左右指针轮流前进，窗口大小增增减减，窗口不断向右滑动，这就是「滑动窗口」这个名字的来历。
      * @return
      */
-    public static String minWindowSubStr(String source, String target) {
+    public String minWindowSubStr(String source, String target) {
 
         Map<Character, Integer> need = new HashMap<>();
         Map<Character, Integer> window = new HashMap<>();
@@ -73,15 +77,70 @@ public class SlidingWindow {
                 left ++;
                 //进行窗口内数据的一系列更新
                 if (need.containsKey(d)) {
-                    window.put(d, window.get(d) - 1);
                     if (window.get(d).equals(need.get(d))) {
                         valid --;
                     }
+                    window.put(d, window.get(d) - 1);
                 }
             }
 
         }
         return len == Integer.MAX_VALUE ? "": source.substring(start, start + len);
+    }
+
+
+    /**
+     *  字符串排列
+     *      问题：
+     *          给定两个字符串 S1 和 S2 , 写一个函数来判断 S2 是否包含 S1 的排列（判断S1的排列之一是否是S2的子串）
+     *      示例：
+     *          输入： S1 = "ab"  S2 = "asdfebah"
+     *          输出： true
+     *          解释： S2 包含 S1 的排列之一 "ba"
+     *
+     *      思路：
+     *          运用滑动窗口算法，给定两个字符串 s 和 t ，判断 s 中是否存在一个子串，包含 t 中的所有字符且没有其他字符
+     * @return
+     */
+    private static boolean checkInclusion(String s, String t) {
+
+        Map<Character, Integer> need = new HashMap<>();
+        Map<Character, Integer> window = new HashMap<>();
+
+        char[] chars = t.toCharArray();
+        // 初始化
+        for (char c : chars) {
+            need.put(c, 1);
+            window.put(c, 0);
+        }
+        int left = 0, right = 0, valid = 0;
+        while (right < s.length()) {
+            char c = s.charAt(right);
+            right ++;
+            if (need.containsKey(c)) {
+                window.put(c, window.get(c) + 1);
+                if (window.get(c).equals(need.get(c))) {
+                    valid ++;
+                }
+            }
+            // 判断左侧窗口是否需要收缩
+            while (right - left > t.length()) {
+                //是否找到合法的字符串
+                if (valid == t.length()) {
+                    return true;
+                }
+                char d = s.charAt(left);
+                left ++;
+                if (need.containsKey(d)) {
+                    if (window.get(d).equals(need.get(d))) {
+                        valid --;
+                    }
+                    window.put(d, window.get(d) - 1);
+                }
+            }
+        }
+
+        return false;
     }
 
 
