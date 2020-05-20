@@ -1,7 +1,6 @@
 package com.billy.leetcode;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Billy
@@ -12,17 +11,23 @@ public class SlidingWindow {
 
     public static void main(String[] args) {
 
-        SlidingWindow slidingWindow = new SlidingWindow();
-        String s = slidingWindow.minWindowSubStr("ADOBECODEBANC", "ABC");
+        // minWindowSubStr
+        String s = minWindowSubStr("ADOBECODEBANC", "ABC");
         System.out.println(s);
 
+        // checkInclusion
         boolean b = checkInclusion("asdfebah", "ab");
         System.out.println(b);
+
+        // findAnagrams
+//        List<Integer> anagrams = findAnagrams("cbaebabacd", "abc");
+        List<Integer> anagrams = findAnagrams("baa", "aa");
+        System.out.println(anagrams);
 
     }
 
     /**
-     * 最小覆盖子串
+     * 最小覆盖子串  Minimum Window Substring
      *  给一个字符串S、一个字符串 T，请在字符串 S 里面找出包含 T 所有字母的最小字符串
      *      示例：输入： s = "ADOBECODEBANC", T = "ABC"
      *            输出： "BANC"
@@ -38,7 +43,7 @@ public class SlidingWindow {
      *              左右指针轮流前进，窗口大小增增减减，窗口不断向右滑动，这就是「滑动窗口」这个名字的来历。
      * @return
      */
-    public String minWindowSubStr(String source, String target) {
+    private static String minWindowSubStr(String source, String target) {
 
         Map<Character, Integer> need = new HashMap<>();
         Map<Character, Integer> window = new HashMap<>();
@@ -90,7 +95,7 @@ public class SlidingWindow {
 
 
     /**
-     *  字符串排列
+     *  字符串排列  Permutation in String
      *      问题：
      *          给定两个字符串 S1 和 S2 , 写一个函数来判断 S2 是否包含 S1 的排列（判断S1的排列之一是否是S2的子串）
      *      示例：
@@ -144,5 +149,70 @@ public class SlidingWindow {
     }
 
 
+    /**
+     *  找所有字母异位词   Find All Anagrams in a String
+     *
+     *  给定一个字符串 s 和一个非空字符串 p，找到 s 中所有是 p 的字母异位词的子串，返回这些子串的起始索引。
+     *      字符串只包含小写英文字母，并且字符串 s 和 p 的长度都不超过 20100。
+     * 说明：
+     *      字母异位词指字母相同，但排列不同的字符串。
+     *      不考虑答案输出的顺序。
+     * 示例 1:
+     *   输入: s: "cbaebabacd" p: "abc"
+     *   输出:  [0, 6]
+     *
+     * 解释:
+     *      起始索引等于 0 的子串是 "cba", 它是 "abc" 的字母异位词。
+     *      起始索引等于 6 的子串是 "bac", 它是 "abc" 的字母异位词。
+     *  
+     * 示例 2:
+     *    输入:  s: "abab" p: "ab"
+     *    输出:  [0, 1, 2]
+     *  解释:
+     *  起始索引等于 0 的子串是 "ab", 它是 "ab" 的字母异位词。
+     *  起始索引等于 1 的子串是 "ba", 它是 "ab" 的字母异位词。
+     *  起始索引等于 2 的子串是 "ab", 它是 "ab" 的字母异位词。
+     *
+     * 来源：力扣（LeetCode） 链接：https://leetcode-cn.com/problems/find-all-anagrams-in-a-string
+     *
+     */
+    public static List<Integer> findAnagrams(String s, String p) {
+
+        List<Integer> result = new ArrayList<>();
+        char[] chars = p.toCharArray();
+        Map<Character, Integer> need = new HashMap<>();
+        Map<Character, Integer> window = new HashMap<>();
+        for (char c : chars) {
+            need.put(c, need.getOrDefault(c, 0) + 1);
+            window.put(c, 0);
+        }
+        int left = 0, right = 0;
+        int valid = 0;
+        while (right < s.length()) {
+            char c = s.charAt(right);
+            right ++;
+            if (need.containsKey(c)) {
+                window.put(c, window.get(c) + 1);
+                if (window.get(c).equals(need.get(c))) {
+                    valid ++;
+                }
+            }
+            while (right - left >= p.length()) {
+                // 找到符合条件的
+                if (valid == need.size()) {
+                    result.add(left);
+                }
+                char d = s.charAt(left);
+                left ++;
+                if (need.containsKey(d)) {
+                    if (window.get(d).equals(need.get(d))) {
+                        valid --;
+                    }
+                    window.put(d, window.get(d) - 1);
+                }
+            }
+        }
+        return result;
+    }
 
 }
