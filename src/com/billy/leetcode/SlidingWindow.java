@@ -13,7 +13,7 @@ public class SlidingWindow {
     public static void main(String[] args) {
 
         SlidingWindow slidingWindow = new SlidingWindow();
-        String s = slidingWindow.minWindowSubStr("ADOBECODEBANCCDAB", "ABC");
+        String s = slidingWindow.minWindowSubStr("ACB", "ABC");
         System.out.println(s);
 
     }
@@ -75,10 +75,7 @@ public class SlidingWindow {
             }
 
         }
-
-        System.out.println("valid::" + valid);
-        return len == Integer.MAX_VALUE ? "": source.substring(start, start + valid + 2);
-
+        return len == Integer.MAX_VALUE ? "": source.substring(start, start + len);
     }
 
 
