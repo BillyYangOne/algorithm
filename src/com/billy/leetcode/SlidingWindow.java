@@ -13,7 +13,7 @@ public class SlidingWindow {
     public static void main(String[] args) {
 
         SlidingWindow slidingWindow = new SlidingWindow();
-        String s = slidingWindow.minWindowSubStr("ACB", "ABC");
+        String s = slidingWindow.minWindowSubStr("ADOBECODEBANC", "ABC");
         System.out.println(s);
 
     }
