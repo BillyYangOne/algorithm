@@ -1,5 +1,9 @@
 package com.billy.leetcode;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @author Billy
  * @description: 双指针技巧
@@ -29,8 +33,13 @@ public class DoublePointer {
 //        ListNode midPoint = doublePointer.findMidPoint(head);
 //        System.out.println(midPoint.getVal());
 
-        ListNode lastIndexPoint = doublePointer.findLastIndexPoint(head, 2);
-        System.out.println(lastIndexPoint.getVal());
+//        ListNode lastIndexPoint = doublePointer.findLastIndexPoint(head, 2);
+//        System.out.println(lastIndexPoint.getVal());
+
+        int[] nums = new int[]{1, 2, 3, 4, 5, 6};
+        doublePointer.reverse(nums);
+        List<Integer> collect = Arrays.stream(nums).boxed().collect(Collectors.toList());
+        System.out.println(collect);
 
     }
 
@@ -119,6 +128,9 @@ public class DoublePointer {
 
     /**
      * 寻找链表的倒数第 k 个元素
+     *  思路：
+     *      让快指针先走 k 步，然后快慢指针开始同速前进。这样当快指针走到链表末尾 null 时，
+     *      慢指针所在的位置就是倒数第 k 个链表节点（为了简化，假设 k 不会超过链表长度）
      *
      * @return
      */
@@ -134,6 +146,77 @@ public class DoublePointer {
             slow = slow.next;
         }
         return slow;
+    }
+
+    // 左右指针
+
+    /**
+     * 二分查找
+     * @param nums
+     * @param target
+     * @return
+     */
+    int binarySearch(int[] nums, int target) {
+
+        int left = 0, right = nums.length - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] > target) {
+                right = mid - 1;
+            } else if(nums[mid] < target) {
+                left = mid + 1;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 两数之和
+     *    给定一个升序排列的有序数组，找到两个数使得他们相加之和等于目标数。
+     *    返回这两个数的坐标值。
+     *    示例：
+     *      输入： nums = [2, 7, 11, 15], target = 18
+     *      输出： [1, 2]
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int[] twoSum(int[] nums, int target) {
+
+        int left = 0, right = nums.length - 1;
+        while (left != right) {
+            int sum = nums[left] + nums[right];
+            if (sum == target) {
+                return new int[]{left,right};
+            } else if (sum < target) {
+                left ++;
+            } else if (sum > target) {
+                right --;
+            }
+        }
+        return new int[] {-1, -1};
+    }
+
+    /**
+     *  反转数组
+     * @param nums
+     */
+    public void reverse(int[] nums) {
+
+        if (nums != null && nums.length > 1) {
+
+            int left = 0, right = nums.length - 1;
+            while (left < right) {
+                int temp = nums[left];
+                nums[left] = nums[right];
+                nums[right] = temp;
+                right --;
+                left ++;
+            }
+        }
     }
 
 
