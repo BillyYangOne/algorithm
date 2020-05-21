@@ -16,22 +16,28 @@ public class DoublePointer {
         ListNode middle = new ListNode(2);
         ListNode last = new ListNode(3);
         middle.setNext(last);
-        last.setNext(middle);
+//        last.setNext(middle);
         head.setNext(middle);
 
         DoublePointer doublePointer = new DoublePointer();
-        boolean b = doublePointer.hasCycle(head);
-        System.out.println(b);
+//        boolean b = doublePointer.hasCycle(head);
+//        System.out.println(b);
+//
+//        ListNode listNode = doublePointer.detectCycle(head);
+//        System.out.println(listNode.getVal());
 
-        ListNode listNode = doublePointer.detectCycle(head);
-        System.out.println(listNode.getVal());
+//        ListNode midPoint = doublePointer.findMidPoint(head);
+//        System.out.println(midPoint.getVal());
+
+        ListNode lastIndexPoint = doublePointer.findLastIndexPoint(head, 2);
+        System.out.println(lastIndexPoint.getVal());
 
     }
 
     /**
      * 判定链表中是否含有环
      */
-    boolean hasCycle(ListNode head) {
+    private boolean hasCycle(ListNode head) {
 
         ListNode fast, slow;
         fast = slow = head;
@@ -79,7 +85,7 @@ public class DoublePointer {
      * @param head
      * @return
      */
-    ListNode detectCycle(ListNode head) {
+    private ListNode detectCycle(ListNode head) {
         ListNode fast, slow;
         fast = slow = head;
         while (fast != null && fast.next != null) {
@@ -91,6 +97,41 @@ public class DoublePointer {
         while (slow != fast) {
             slow = slow.next;
             fast = fast.next;
+        }
+        return slow;
+    }
+
+    /**
+     *  寻找链表的中点
+     *      思路： 运用双指针
+     * @return
+     */
+    ListNode findMidPoint(ListNode head) {
+
+        ListNode fast, slow;
+        fast = slow = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
+    /**
+     * 寻找链表的倒数第 k 个元素
+     *
+     * @return
+     */
+    ListNode findLastIndexPoint(ListNode head, int k) {
+
+        ListNode fast, slow;
+        fast = slow = head;
+        while (k-- > 0) {
+            fast = fast.next;
+        }
+        while (fast != null) {
+            fast = fast.next;
+            slow = slow.next;
         }
         return slow;
     }
