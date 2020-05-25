@@ -181,7 +181,7 @@ public class BFS {
                 if (current.equals(target))
                     return step;
 
-                // 将一个节点的未便利节点计入队列
+                // 将一个节点的未遍历节点计入队列
                 for (int j = 0; j < 4; j++) {
                     String up = plusOne(current, j);
                     if (!visited.contains(up)) {
