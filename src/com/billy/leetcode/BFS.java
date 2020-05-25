@@ -157,8 +157,7 @@ public class BFS {
     public int openLock(String[] deadends, String target) {
 
         // 记录需要跳过的死亡密码
-        Set<String> deeds = new HashSet<>();
-        deeds.addAll(Arrays.asList(deadends));
+        Set<String> deeds = new HashSet<>(Arrays.asList(deadends));
 
         // 记录已经穷举过的密码，防止走回头路
         Set<String> visited = new HashSet<>();
@@ -173,15 +172,13 @@ public class BFS {
             // 将当前队列中的所有节点向周围扩散
             for (int i = 0; i < size; i++) {
                 String current = queue.poll();
-
                 // 排除死亡密码
                 if (deeds.contains(current))
                     continue;
                 // 判断是否到达终点
                 if (current.equals(target))
                     return step;
-
-                // 将一个节点的未遍历节点计入队列
+                // 将一个节点的 未遍历节点 计入队列
                 for (int j = 0; j < 4; j++) {
                     String up = plusOne(current, j);
                     if (!visited.contains(up)) {
@@ -202,10 +199,14 @@ public class BFS {
 
     /**
      * 双向 BFS
+     *      传统的 BFS 框架就是从七点开始向四周扩散，遇到终点时停止；
+     *      而双向 BFS 则是从起点和终点同时开始扩散，当两边有交集的时候停止。
+     *    但是，双向 BFS 也有局限性，就是必须要知道终点的位置
      */
     int openLock2(String[] deedends, String target) {
-        Set<String> deeds = new HashSet<>();
-        deeds.addAll(Arrays.asList(deedends));
+
+        // 死亡密码
+        Set<String> deeds = new HashSet<>(Arrays.asList(deedends));
         // 用集合可以快速判断
         Set<String> q1 = new HashSet<>();
         Set<String> q2 = new HashSet<>();
@@ -216,11 +217,10 @@ public class BFS {
         q2.add(target);
 
         while (!q1.isEmpty() && !q2.isEmpty()) {
-            Set<String> temp = new HashSet<>();
 
+            Set<String> temp = new HashSet<>();
             // 将 q1 中的所有节点向周围扩散
             for (String current : q1) {
-
                 // 判断是否到达终点
                 if (deeds.contains(current))
                     continue;
