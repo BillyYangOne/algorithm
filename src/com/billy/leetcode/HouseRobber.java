@@ -29,8 +29,7 @@ public class HouseRobber {
      * @return
      */
     // ++++++++++++ 1、基础方法 ++++++++++++++++
-   /*
-   // 主函数
+    /*   // 主函数
    public int rob(int[] nums) {
         return dp(nums, 0);
     }
@@ -80,7 +79,7 @@ public class HouseRobber {
     // ++++++++++++++++++++++++++++
 
     // ++++++++++++++ 3、自底向上 ++++++++++++++
-    public int rob(int[] nums) {
+    /*public int rob(int[] nums) {
 
         int n = nums.length;
         // dp[i] = x 表示从第i间房子开始，能抢到的钱最多为 x
@@ -90,7 +89,21 @@ public class HouseRobber {
             dp[i] = Math.max(dp[i + 1], nums[i] + dp[i + 2]);
         }
         return dp[0];
+    }*/
+    // ++++++++++++++++++++++++++++
+    // ++++++++++++++ 4、代码优化（ 将空间复杂度降低到O(1) ） ++++++++++++++
+    int rob(int[] nums) {
+        int n = nums.length;
+        // 记录 dp[i+1] 和 dp[i+2]
+        int dp_i_1 = 0, dp_i_2 = 0;
+        // 记录 dp[i]
+        int dp_i = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            dp_i = Math.max(dp_i_1, nums[i] + dp_i_2);
+            dp_i_2 = dp_i_1;
+            dp_i_1 = dp_i;
+        }
+        return dp_i;
     }
     // ++++++++++++++++++++++++++++
-
 }
