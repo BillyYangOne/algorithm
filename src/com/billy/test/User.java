@@ -13,6 +13,12 @@ public class User {
     private Integer age;
     private String[] names;
 
+    public User() {}
+
+    public User(String UserName) {
+        this.userName = UserName;
+    }
+
     public String[] getNames() {
         return names;
     }
