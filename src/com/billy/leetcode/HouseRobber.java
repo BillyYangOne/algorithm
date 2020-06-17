@@ -106,4 +106,34 @@ public class HouseRobber {
         return dp_i;
     }
     // ++++++++++++++++++++++++++++
+
+    /**
+     *  House robber 2
+     * 这道题目和第一道描述基本一样，强盗依然不能抢劫相邻的房子，输入依然是一个数组，但是告诉你这些房子不是一排，而是围成了一个圈。
+     * 也就是说，现在第一间房子和最后一间房子也相当于是相邻的，不能同时抢。
+     * 比如说输入数组 nums=[2,3,2]， 算法返回的结果应该是 3 而不是 4，因为开头和结尾不能同时被抢。
+      */
+
+    public int rob2(int[] nums) {
+        int n = nums.length;
+        if (n == 1) {
+            return nums[0];
+        }
+        return Math.max(robRange(nums, 1, n - 1), robRange(nums, 0, n - 2));
+    }
+
+    // 计算 [start, end] 的最优结果
+    public int robRange(int[] nums, int start, int end) {
+        int n = nums.length;
+        int dp_i_1 = 0, dp_i_2 = 0;
+        int dp_i = 0;
+        for (int i = end; i >= start; i--) {
+            dp_i = Math.max(dp_i_1, nums[i] + dp_i_2);
+            dp_i_2 = dp_i_1;
+            dp_i_1 = dp_i;
+        }
+        return dp_i;
+    }
+
+
 }
