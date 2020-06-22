@@ -1,8 +1,6 @@
 package com.billy.java8;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -68,8 +66,34 @@ public class StreamSample {
 
 
 
-        // 查找 和 匹配
+        // 查找 和 匹配  (anyMath、allMatch、noneMatch、findFirst、findAny)
+        menu.stream().anyMatch(dish -> "vegetarian".equals(dish));
 
+        List<Integer> someNumbers = Arrays.asList(1, 2, 3, 4, 5);
+        Optional<Integer> first = someNumbers.stream().map(n -> n * n).filter(n -> n % 3 == 0).findFirst();
+        first.ifPresent(System.out::println);
+
+        // 4、归约 reduce
+        /**
+         * reduce接受两个参数：
+         *  一个初始值，这里是0；
+         *  一个BinaryOperator<T>来将两个元素结合起来产生一个新值，这里我们用的是 lambda (a, b) -> a + b
+         */
+        // 4.1 对所有元素求合
+        Integer total = someNumbers.stream().reduce(0, (a, b) -> a * b);
+        // 4.2 最大值 最小值
+        someNumbers.stream().reduce(Integer::max);
+        someNumbers.stream().reduce(Integer::min);
+
+        // 示例：计算菜单中所有的菜
+        menu.stream().map(d -> 1).reduce(Integer::sum);
+
+        List<Dish> billy = menu.stream().filter(dish -> dish.getName().equals("billy")).sorted(Comparator.comparing(Dish::getPrice))
+                .collect(Collectors.toList());
+        menu.stream().map(Dish::getName).distinct().collect(Collectors.toList());
+
+        // 获取所有的菜单名称，按照字母顺序排序，得到将所有名字连接起来的字符串
+        String collect = menu.stream().map(Dish::getName).distinct().sorted().collect(Collectors.joining());
 
 
     }
